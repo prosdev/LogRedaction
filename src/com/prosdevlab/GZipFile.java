@@ -9,48 +9,60 @@ public class GZipFile {
 
     /**
      * gzipFile
-     * @param
      * @param gzipOutputFile
      * @param sourceFile
      *
      */
-    public void gzipFile(String gzipOutputFile, String sourceFile){
+    public void gzipFile(String gzipOutputFile, String sourceFile) throws IOException {
         byte [] buffer = new byte[1024];
-
-        /**
-         * Implement a stream filter to write compressed data in GZIP format.
-         * Open a gzipOutputStream while there is still data from the source file,
-         * and then create a new output stream with the specified buffer size.
-         * See: https://docs.oracle.com/javase/8/docs/api/java/util/zip/GZIPOutputStream.html
-         */
+        GZIPOutputStream gzipOutputStream = new GZIPOutputStream(new FileOutputStream(gzipOutputFile));
+        FileInputStream inputStream = new FileInputStream(sourceFile);
         try {
-            GZIPOutputStream gzipOutputStream = new GZIPOutputStream(new FileOutputStream(gzipOutputFile));
-
-            FileInputStream inputStream = new FileInputStream(sourceFile);
-
             int length;
 
             while((length = inputStream.read(buffer)) > 0) {
-                System.out.println("\uD83D\uDD28 ... GZIP in process.");
+                System.out.println("\uD83D\uDD28 ... GZIP compress in process.");
                 gzipOutputStream.write(buffer, 0, length);
             }
-
+        } finally {
             inputStream.close();
             gzipOutputStream.finish();
             gzipOutputStream.close();
-
             System.out.println("\uD83D\uDCC1 ... Done with gzip process.");
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
-    public void decompressGzipFile(String gzipSourceFile, String txtOutputFile) {
-        byte[] buffer = new byte[1024];
+    /**
+     * decompressGzipFile
+     * @param gzipSourceFile
+     */
+    public void decompressGzipFile(String gzipSourceFile) throws IOException {
+
+        //Open compressed (input) file
+        FileInputStream inputStream = new FileInputStream(gzipSourceFile);
+        FileOutputStream outputStream = null;
+        byte[] buffer = new byte[2048];
+        GZIPInputStream gzipInputStream = new GZIPInputStream(inputStream);
+
         try {
-            GZIPInputStream gzipInputStream = new GZIPInputStream(new FileInputStream(gzipSourceFile));
-        } catch (IOException e) {
-            e.printStackTrace();
+            //Create output file (take away the .gz extension)
+            String outputFileName = gzipSourceFile.substring(0, gzipSourceFile.length()-3);
+            outputStream = new FileOutputStream(outputFileName+".txt");
+
+            int length;
+
+            while ((length = gzipInputStream.read(buffer)) > 0) {
+                System.out.println("\uD83D\uDD28 ... GZIP decompress in process.");
+                outputStream.write(buffer, 0, length);
+            }
+        } finally {
+            gzipInputStream.close();
+            if(outputStream != null) {
+                outputStream.close();
+            }
+            inputStream.close();
+
+            System.out.println("\uD83D\uDCC1 ... Done with gzip process.");
         }
     }
 }
