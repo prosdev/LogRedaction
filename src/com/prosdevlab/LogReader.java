@@ -15,6 +15,7 @@ public class LogReader {
 
     public static File processLogFile(String uncompressLogFile) throws IOException {
         CreditCardValidator creditCardValidator = new CreditCardValidator();
+        SSNValidator ssnValidator = new SSNValidator();
 
         FileInputStream inputStream = null;
         Scanner scanner = null;
@@ -36,9 +37,12 @@ public class LogReader {
         }
 
         try {
+            //Begin to process uncompressed file
             inputStream = new FileInputStream(uncompressLogFile);
             scanner = new Scanner(inputStream, "UTF-8");
 
+            //While there are lines remaining in the uncompressed file,
+            //write to a new file (this new file should not contain log info with SSN or CC#)
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
                 lineNumber ++;
@@ -46,14 +50,14 @@ public class LogReader {
                 try (BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(
                         new FileOutputStream(file, true), "UTF-8"))) {
 
-                    //If line contains credit card info, append it
-                    if(!creditCardValidator.validate(line)) {
+                    //If line do not contain SSN or CC#, will append to new redacted log file.
+                    //Otherwise, just increased the tally of redacted lines
+                    if(creditCardValidator.validate(line) || ssnValidator.validate(line)) {
+                        numberOfLineRedacted++;
+                    } else {
                         bufferedWriter.write(line);
                         bufferedWriter.newLine();
                         System.out.println("Added new line to file!");
-                    } else {
-                        System.out.println("Line contains credit card number" + lineNumber);
-                        numberOfLineRedacted++;
                     }
                 }
             }

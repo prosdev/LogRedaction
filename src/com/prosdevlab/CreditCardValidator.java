@@ -23,7 +23,10 @@ public class CreditCardValidator {
      */
     public boolean validate(final String content) {
         matcher = pattern.matcher(content);
-        boolean isValid = matcher.find();
+        boolean isValid = false;
+
+        isValid = matcher.find();
+
         return isValid;
     }
 }
