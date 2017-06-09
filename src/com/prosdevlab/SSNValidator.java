@@ -3,6 +3,7 @@ package com.prosdevlab;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+//https://www.codeproject.com/Articles/651609/Validating-Social-Security-Numbers-through-Regular
 public class SSNValidator {
     private Pattern pattern;
     private Matcher matcher;

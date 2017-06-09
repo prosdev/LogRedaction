@@ -12,11 +12,8 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         GZipFile gZip = new GZipFile();
-//        long startTime = System.currentTimeMillis();
-//        gZip.gzipFile(GZIP_OUTPUT_FILE, SOURCE_FILE);
-//        long endTime = System.currentTimeMillis();
-//        System.out.println( "⌛... GZIP compress time: " + (endTime - startTime) + "ms");
 
+        //Uncompress log file
         long startTimeDecompress = System.currentTimeMillis();
         String uncompressLogFile = gZip.decompressGzipFile(GZIP_SOURCE_FILE);
         long endTimeDecompress = System.currentTimeMillis();
@@ -24,6 +21,7 @@ public class Main {
 
         File redactedLog = LogReader.processLogFile(uncompressLogFile);
 
+        //Compress processed log file
         long startTime = System.currentTimeMillis();
         gZip.gzipFile(redactedLog);
         long endTime = System.currentTimeMillis();

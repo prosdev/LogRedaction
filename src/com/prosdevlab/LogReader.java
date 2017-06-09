@@ -46,7 +46,6 @@ public class LogReader {
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
                 lineNumber ++;
-                System.out.println(line);
                 try (BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(
                         new FileOutputStream(file, true), "UTF-8"))) {
 
@@ -57,7 +56,6 @@ public class LogReader {
                     } else {
                         bufferedWriter.write(line);
                         bufferedWriter.newLine();
-                        System.out.println("Added new line to file!");
                     }
                 }
             }
@@ -77,7 +75,53 @@ public class LogReader {
         System.out.println("------ Total lines processed: " +lineNumber);
         System.out.println("------ File processed: " + uncompressLogFile);
         System.out.println("------ Number of lines redacted from log : " + numberOfLineRedacted);
+
+        addToAuditLog(uncompressLogFile, lineNumber, numberOfLineRedacted, file.getName());
         return file;
     }
 
+    /**
+     *
+     * @param fileName
+     * @param lineNumber
+     * @param numberOfLineRedacted
+     * @param name
+     * @throws IOException
+     */
+    public static void addToAuditLog(String fileName, int lineNumber, int numberOfLineRedacted, String name) throws IOException {
+        BufferedWriter bw = null;
+        FileWriter fw = null;
+
+        File file = new File("audit_log.txt");
+
+        try {
+            fw = new FileWriter(file, true);
+            bw = new BufferedWriter(fw);
+
+            String processedFileName = "File processed: " + fileName;
+            String linesProcessed = "Total lines processed: " + lineNumber;
+            String linesRedacted = "Total lines redacted from log: " + numberOfLineRedacted;
+            String newFileName = "Redacted file name: " + name;
+
+            bw.write(processedFileName);
+            bw.newLine();
+            bw.write(newFileName);
+            bw.newLine();
+            bw.write(linesProcessed);
+            bw.newLine();
+            bw.write(linesRedacted);
+            bw.newLine();
+            bw.write("--------------------------------");
+            bw.newLine();
+
+        } finally {
+            if (bw != null) {
+                bw.close();
+            }
+
+            if (fw != null) {
+                fw.close();
+            }
+        }
+    }
 }
