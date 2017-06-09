@@ -54,8 +54,9 @@ public class GZipFile {
 
         //Create output file (take away the .gz extension)
         String outputFileName = gzipSourceFile.getName().substring(0, gzipSourceFile.getName().length()-3) + ".txt";
-        File newFile = new File(outputFileName);
-        outputStream = new FileOutputStream(newFile);
+        File decompFile = new File(outputFileName);
+
+        outputStream = new FileOutputStream(decompFile);
 
         try {
 
@@ -76,6 +77,6 @@ public class GZipFile {
 
             System.out.println("\uD83D\uDCC1 ... Done with gzip process.");
         }
-        return newFile;
+        return decompFile;
     }
 }

@@ -98,7 +98,7 @@ public class LogReader {
             fw = new FileWriter(file, true);
             bw = new BufferedWriter(fw);
 
-            String processedFileName = "File processed: " + fileName;
+            String processedFileName = "File processed: " + fileName.getName();
             String linesProcessed = "Total lines processed: " + lineNumber;
             String linesRedacted = "Total lines redacted from log: " + numberOfLineRedacted;
             String newFileName = "Redacted file name: " + name;

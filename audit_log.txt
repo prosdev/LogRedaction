@@ -1,5 +1,0 @@
-File processed: sample_log.txt
-Redacted file name: redacted_sample_log.txt
-Total lines processed: 35
-Total lines redacted from log: 4
---------------------------------

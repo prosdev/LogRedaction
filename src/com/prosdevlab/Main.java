@@ -8,15 +8,17 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         GZipFile gZip = new GZipFile();
-        File gzipFile = new File("sample_log.gz");
 
+        File gzFile = new File("sample_log.gz");
         //Uncompress log file
         long startTimeDecompress = System.currentTimeMillis();
-        File uncompressLogFile = gZip.decompressGzipFile(gzipFile);
+        File uncompressLogFile = gZip.decompressGzipFile(gzFile);
         long endTimeDecompress = System.currentTimeMillis();
         System.out.println( "⌛... GZIP uncompress time: " + (endTimeDecompress - startTimeDecompress) + "ms");
 
+        System.out.println("------------- Beginning to process log file -----------");
         File redactedLog = LogReader.processLogFile(uncompressLogFile);
+        System.out.println("------------- Ending of process log file -----------");
 
         //Compress processed log file
         long startTime = System.currentTimeMillis();
