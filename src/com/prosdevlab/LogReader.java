@@ -26,7 +26,7 @@ public class LogReader {
                     bufferedWriter.write(line);
                     bufferedWriter.newLine();
                 }
-                System.out.println("Done writing new file!");
+                System.out.println("Added new line to file!");
             }
 
             if(scanner.ioException() != null) {
