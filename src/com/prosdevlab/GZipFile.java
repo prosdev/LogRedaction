@@ -12,8 +12,8 @@ public class GZipFile {
      * @param sourceFile
      *
      */
-    public void gzipFile(String sourceFile) throws IOException {
-        String gzipOutputFile = sourceFile.substring(0, sourceFile.length() - 4)+".gz";
+    public void gzipFile(File sourceFile) throws IOException {
+        String gzipOutputFile = sourceFile.getName().substring(0, sourceFile.getName().length() - 4)+".gz";
         byte [] buffer = new byte[1024];
         GZIPOutputStream gzipOutputStream = new GZIPOutputStream(new FileOutputStream(gzipOutputFile));
         FileInputStream inputStream = new FileInputStream(sourceFile);

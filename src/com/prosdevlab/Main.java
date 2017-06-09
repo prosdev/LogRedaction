@@ -1,5 +1,6 @@
 package com.prosdevlab;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
@@ -21,7 +22,7 @@ public class Main {
         long endTimeDecompress = System.currentTimeMillis();
         System.out.println( "⌛... GZIP uncompress time: " + (endTimeDecompress - startTimeDecompress) + "ms");
 
-        String redactedLog = LogReader.processLogFile(uncompressLogFile);
+        File redactedLog = LogReader.processLogFile(uncompressLogFile);
 
         long startTime = System.currentTimeMillis();
         gZip.gzipFile(redactedLog);
