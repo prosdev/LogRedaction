@@ -8,14 +8,20 @@ import java.util.zip.GZIPOutputStream;
 public class GZipFile {
 
     /**
-     * gzipFile
+     * Will gzip a given file.
      * @param sourceFile
      *
      */
     public void gzipFile(File sourceFile) throws IOException {
+        //Create gzipOutputFile name
         String gzipOutputFile = sourceFile.getName().substring(0, sourceFile.getName().length() - 4)+".gz";
+
+        //Allot buffer size
         byte [] buffer = new byte[1024];
+
+        //Open GZIPOutputStream to process
         GZIPOutputStream gzipOutputStream = new GZIPOutputStream(new FileOutputStream(gzipOutputFile));
+
         FileInputStream inputStream = new FileInputStream(sourceFile);
         try {
             int length;
@@ -25,6 +31,7 @@ public class GZipFile {
                 gzipOutputStream.write(buffer, 0, length);
             }
         } finally {
+            //Close all the streams
             inputStream.close();
             gzipOutputStream.finish();
             gzipOutputStream.close();
@@ -33,8 +40,9 @@ public class GZipFile {
     }
 
     /**
-     * decompressGzipFile
+     * Will uncompress gzip file given source.
      * @param gzipSourceFile
+     * @return file
      */
     public String decompressGzipFile(String gzipSourceFile) throws IOException {
 
@@ -57,6 +65,8 @@ public class GZipFile {
                 outputStream.write(buffer, 0, length);
             }
         } finally {
+
+            //Close streams
             gzipInputStream.close();
             if(outputStream != null) {
                 outputStream.close();

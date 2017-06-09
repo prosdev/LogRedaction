@@ -19,16 +19,18 @@ public class LogReader {
         FileInputStream inputStream = null;
         Scanner scanner = null;
         int lineNumber = 0;
+        int numberOfLineRedacted = 0;
         String redactedLog =  "redacted_"+ uncompressLogFile;
         Path path = Paths.get(redactedLog);
         File file = null;
         Date date = new Date();
+        String timestamp = String.valueOf(date.getTime());
 
         //Make sure that we have new unique logs with time stamp, to avoid override/appending to old log
         if(Files.exists(path)) {
             System.out.println("⚠... File already exists. Creating new file...");
 
-            file = new File(redactedLog.substring(0, redactedLog.length()-4)+ "_v" + date.getTime() + ".txt");
+            file = new File(redactedLog.substring(0, redactedLog.length()-4)+ "_v" + timestamp + ".txt");
         } else {
             file = new File(redactedLog);
         }
@@ -43,10 +45,17 @@ public class LogReader {
                 System.out.println(line);
                 try (BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(
                         new FileOutputStream(file, true), "UTF-8"))) {
-                    bufferedWriter.write(line);
-                    bufferedWriter.newLine();
+
+                    //If line contains credit card info, append it
+                    if(!creditCardValidator.validate(line)) {
+                        bufferedWriter.write(line);
+                        bufferedWriter.newLine();
+                        System.out.println("Added new line to file!");
+                    } else {
+                        System.out.println("Line contains credit card number" + lineNumber);
+                        numberOfLineRedacted++;
+                    }
                 }
-                System.out.println("Added new line to file!");
             }
 
             if(scanner.ioException() != null) {
@@ -61,6 +70,9 @@ public class LogReader {
                 scanner.close();
             }
         }
+        System.out.println("------ Total lines processed: " +lineNumber);
+        System.out.println("------ File processed: " + uncompressLogFile);
+        System.out.println("------ Number of lines redacted from log : " + numberOfLineRedacted);
         return file;
     }
 
