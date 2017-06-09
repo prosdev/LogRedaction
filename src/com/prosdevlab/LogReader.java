@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
  */
 public class LogReader {
 
-    public static File processLogFile(String uncompressLogFile) throws IOException {
+    public static File processLogFile(File uncompressLogFile) throws IOException {
         CreditCardValidator creditCardValidator = new CreditCardValidator();
         SSNValidator ssnValidator = new SSNValidator();
 
@@ -88,7 +88,7 @@ public class LogReader {
      * @param name
      * @throws IOException
      */
-    public static void addToAuditLog(String fileName, int lineNumber, int numberOfLineRedacted, String name) throws IOException {
+    public static void addToAuditLog(File fileName, int lineNumber, int numberOfLineRedacted, String name) throws IOException {
         BufferedWriter bw = null;
         FileWriter fw = null;
 

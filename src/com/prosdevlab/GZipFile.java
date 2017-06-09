@@ -44,7 +44,7 @@ public class GZipFile {
      * @param gzipSourceFile
      * @return file
      */
-    public String decompressGzipFile(String gzipSourceFile) throws IOException {
+    public File decompressGzipFile(File gzipSourceFile) throws IOException {
 
         //Open compressed (input) file
         FileInputStream inputStream = new FileInputStream(gzipSourceFile);
@@ -53,8 +53,9 @@ public class GZipFile {
         GZIPInputStream gzipInputStream = new GZIPInputStream(inputStream);
 
         //Create output file (take away the .gz extension)
-        String outputFileName = gzipSourceFile.substring(0, gzipSourceFile.length()-3) + ".txt";
-        outputStream = new FileOutputStream(outputFileName);
+        String outputFileName = gzipSourceFile.getName().substring(0, gzipSourceFile.getName().length()-3) + ".txt";
+        File newFile = new File(outputFileName);
+        outputStream = new FileOutputStream(newFile);
 
         try {
 
@@ -75,6 +76,6 @@ public class GZipFile {
 
             System.out.println("\uD83D\uDCC1 ... Done with gzip process.");
         }
-        return outputFileName;
+        return newFile;
     }
 }

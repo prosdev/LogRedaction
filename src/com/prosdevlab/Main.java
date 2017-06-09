@@ -6,16 +6,13 @@ import java.io.IOException;
 
 public class Main {
 
-//    private static final String GZIP_OUTPUT_FILE = "/Users/flamingo/dev/LogRedaction/sample_log.gz";
-//    private static final String SOURCE_FILE = "/Users/flamingo/dev/LogRedaction/sample_log.txt";
-    private static final String GZIP_SOURCE_FILE = "sample_log.gz";
-
     public static void main(String[] args) throws IOException {
         GZipFile gZip = new GZipFile();
+        File gzipFile = new File("sample_log.gz");
 
         //Uncompress log file
         long startTimeDecompress = System.currentTimeMillis();
-        String uncompressLogFile = gZip.decompressGzipFile(GZIP_SOURCE_FILE);
+        File uncompressLogFile = gZip.decompressGzipFile(gzipFile);
         long endTimeDecompress = System.currentTimeMillis();
         System.out.println( "⌛... GZIP uncompress time: " + (endTimeDecompress - startTimeDecompress) + "ms");
 
