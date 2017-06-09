@@ -8,8 +8,17 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         GZipFile gZip = new GZipFile();
+        String filePath = "";
 
-        File gzFile = new File("sample_log.gz");
+        if( args.length == 0) {
+            System.out.println("Please enter an absolute path to a .gz file");
+            filePath = "sample_log.gz";
+        } else {
+            System.out.println(args[0]);
+            filePath = args[0];
+        }
+
+        File gzFile = new File(filePath);
         //Uncompress log file
         long startTimeDecompress = System.currentTimeMillis();
         File uncompressLogFile = gZip.decompressGzipFile(gzFile);
