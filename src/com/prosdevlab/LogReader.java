@@ -1,8 +1,6 @@
 package com.prosdevlab;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.util.Scanner;
 
 /**
@@ -10,11 +8,11 @@ import java.util.Scanner;
  */
 public class LogReader {
 
-    public static void processLogFile(String uncompressLogFile) throws IOException {
+    public static String processLogFile(String uncompressLogFile) throws IOException {
         FileInputStream inputStream = null;
         Scanner scanner = null;
         int lineNumber = 0;
-
+        String redactedLog = "edited_" + uncompressLogFile;
         try {
             inputStream = new FileInputStream(uncompressLogFile);
             scanner = new Scanner(inputStream, "UTF-8");
@@ -23,7 +21,12 @@ public class LogReader {
                 String line = scanner.nextLine();
                 lineNumber ++;
                 System.out.println(line);
-                System.out.println("Line number: " + lineNumber);
+                try (BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(
+                        new FileOutputStream(redactedLog, true), "UTF-8"))) {
+                    bufferedWriter.write(line);
+                    bufferedWriter.newLine();
+                }
+                System.out.println("Done writing new file!");
             }
 
             if(scanner.ioException() != null) {
@@ -38,5 +41,7 @@ public class LogReader {
                 scanner.close();
             }
         }
+        return redactedLog;
     }
+
 }

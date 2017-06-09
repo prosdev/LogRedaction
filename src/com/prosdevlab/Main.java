@@ -21,6 +21,11 @@ public class Main {
         long endTimeDecompress = System.currentTimeMillis();
         System.out.println( "⌛... GZIP uncompress time: " + (endTimeDecompress - startTimeDecompress) + "ms");
 
-        LogReader.processLogFile(uncompressLogFile);
+        String redactedLog = LogReader.processLogFile(uncompressLogFile);
+
+        long startTime = System.currentTimeMillis();
+        gZip.gzipFile(redactedLog);
+        long endTime = System.currentTimeMillis();
+        System.out.println( "⌛... GZIP compress time: " + (endTime - startTime) + "ms");
     }
 }
